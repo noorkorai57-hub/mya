@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>⚡ Hassan Flex — AI Video Generator ⚡</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -11,14 +11,11 @@
   --accent1:#00eaff;
   --accent2:#ff007f;
   --card-bg:rgba(255,255,255,0.05);
-  --muted:#bfc9d4;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
 body{
   background:radial-gradient(circle at top left,#0b0c1a,#12092a,#1b0b18);
-  color:#fff;min-height:100vh;
-  display:flex;align-items:flex-start;justify-content:center;
-  padding:28px 16px;
+  color:#fff;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;
 }
 .container{width:100%;max-width:720px;}
 header{
@@ -60,79 +57,79 @@ h2{color:var(--accent1);text-align:center;margin-bottom:16px}
   border:6px solid rgba(255,255,255,0.08);border-top-color:var(--accent1);
   animation:spin 1s linear infinite;margin:10px auto}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .result{margin-top:20px;text-align:center}
-
-/* Stylish video player box */
-.video-box{
-  position:relative;
-  overflow:hidden;
-  border-radius:16px;
-  border:2px solid transparent;
-  background:linear-gradient(120deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));
-  box-shadow:0 0 25px rgba(0,234,255,0.12);
-}
-.video-box::before{
-  content:"";
-  position:absolute;inset:0;
-  padding:2px;border-radius:16px;
-  background:linear-gradient(135deg,var(--accent1),var(--accent2));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  pointer-events:none;
-}
-video{
-  width:100%;height:auto;border-radius:14px;display:block;
-}
-
-/* Loader inside video box */
-.inner-loader{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-}
-.inner-spinner{
-  width:60px;height:60px;border-radius:50%;
-  border:6px solid rgba(255,255,255,0.1);
-  border-top-color:var(--accent1);
-  animation:spin 1s linear infinite;
-}
-.inner-loader p{margin-top:8px;color:#bfc9d4;font-size:13px}
+.video-box{position:relative;overflow:hidden;border-radius:16px;border:2px solid transparent;background:linear-gradient(120deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));box-shadow:0 0 25px rgba(0,234,255,0.12);}
+video{width:100%;height:auto;border-radius:14px;display:block;}
 .footer{margin-top:18px;text-align:center;color:#aaa;font-size:14px}
 </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="title">⚡ Hassan Flex — AI Video Generator ⚡</div>
-    </header>
+<div class="container">
+  <header>
+    <div class="title">⚡ Hassan Flex — AI Video Generator ⚡</div>
+  </header>
 
-    <div class="card">
-      <h2>🎬 Generate AI Video</h2>
-      <textarea id="prompt" class="input" rows="3" placeholder="Enter your idea...">A cat riding a skateboard in space, high resolution</textarea>
+  <div class="card">
+    <h2>🎬 Generate AI Video</h2>
+    <textarea id="prompt" class="input" rows="3" placeholder="Enter your idea...">A cat riding a skateboard in space, high resolution</textarea>
 
-      <div class="controls">
-        <select id="quality" class="input" style="max-width:200px">
-          <option>240p</option>
-          <option>360p</option>
-          <option>480p</option>
-          <option selected>720p</option>
-          <option>1080p</option>
-        </select>
-        <button id="generateBtn" class="button">🖌️ Generate Video</button>
-      </div>
-
-      <div id="loader">
-        <div class="spinner"></div>
-        <div style="font-size:13px;color:#bbb">Generating... please wait</div>
-      </div>
-
-      <div id="result" class="result"></div>
+    <div class="controls">
+      <select id="quality" class="input" style="max-width:200px">
+        <option>240p</option>
+        <option>360p</option>
+        <option>480p</option>
+        <option selected>720p</option>
+        <option>1080p</option>
+      </select>
+      <button id="generateBtn" class="button">🖌️ Generate Video</button>
     </div>
 
-    <div class="footer">💫 Powered by Hassan Flex AI — 2025</div>
+    <div id="loader">
+      <div class="spinner"></div>
+      <div style="font-size:13px;color:#bbb">Generating... please wait</div>
+    </div>
+
+    <div id="result" class="result"></div>
   </div>
 
-  <!-- External JS -->
-  <script src="aivideo.js"></script>
+  <div class="footer">💫 Powered by Hassan Flex AI — 2025</div>
+</div>
+
+<!-- Inline JS to ensure button works -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const genBtn = document.getElementById('generateBtn');
+  const promptEl = document.getElementById('prompt');
+  const qualityEl = document.getElementById('quality');
+  const loader = document.getElementById('loader');
+  const result = document.getElementById('result');
+
+  async function showError(msg) {
+    result.innerHTML = `<p style="color:#ff8a80">${msg}</p>`;
+  }
+
+  genBtn.addEventListener('click', async () => {
+    const prompt = promptEl.value.trim();
+    const quality = qualityEl.value;
+    if (!prompt) return showError('Please enter a prompt.');
+
+    result.innerHTML = '';
+    loader.style.display = 'block';
+
+    try {
+      const api = `https://yabes-api.pages.dev/api/ai/video/v2?prompt=${encodeURIComponent(prompt)}&quality=${encodeURIComponent(quality)}`;
+      const res = await fetch(api);
+      const data = await res.json();
+      if (!data.url) throw new Error('No video URL returned');
+
+      loader.style.display = 'none';
+      result.innerHTML = `<div class="video-box"><video src="${data.url}" controls autoplay playsinline></video></div>`;
+    } catch(e) {
+      loader.style.display = 'none';
+      showError('⚠️ Failed to load video. Try again later.');
+    }
+  });
+});
+</script>
 </body>
 </html>
