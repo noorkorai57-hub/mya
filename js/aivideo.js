@@ -13,28 +13,35 @@ genBtn.addEventListener('click', async () => {
   const quality = qualityEl.value;
   if (!prompt) return showError('Please enter a prompt.');
 
+  // Clear previous result and show loader
   result.innerHTML = '';
   loader.style.display = 'block';
 
-  const api = `https://yabes-api.pages.dev/api/ai/video/v2?prompt=${encodeURIComponent(prompt)}&quality=${encodeURIComponent(quality)}`;
-
   try {
+    // Fetch video URL from API
+    const api = `https://yabes-api.pages.dev/api/ai/video/v2?prompt=${encodeURIComponent(prompt)}&quality=${encodeURIComponent(quality)}`;
     const res = await fetch(api);
     if (!res.ok) throw new Error('Network error');
 
-    const blob = await res.blob();
-    let videoURL;
+    const data = await res.json();
+    if (!data.url) throw new Error('No video URL returned');
 
-    if (blob.type.includes('json')) {
-      const txt = await blob.text();
-      const data = JSON.parse(txt);
-      if (data.url) videoURL = data.url;
-      else throw new Error('No video URL');
-    } else {
-      videoURL = URL.createObjectURL(blob);
-      window.addEventListener('beforeunload', () => URL.revokeObjectURL(videoURL));
-    }
+    // Hide loader
+    loader.style.display = 'none';
 
+    // Show video in result
+    result.innerHTML = `
+      <div class="video-box">
+        <video id="aiVideo" controls autoplay playsinline src="${data.url}"></video>
+      </div>
+    `;
+
+  } catch (e) {
+    console.error(e);
+    loader.style.display = 'none';
+    showError('⚠️ Failed to load video. Try again later.');
+  }
+});
     loader.style.display = 'none';
     result.innerHTML = `
       <div class="video-box">
