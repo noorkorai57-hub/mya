@@ -19,7 +19,7 @@ genBtn.addEventListener('click', async () => {
 
   try {
     // Fetch video URL from API
-    const api = `https://yabes-api.pages.dev/api/ai/video/v2?prompt=${encodeURIComponent(prompt)}&quality=${encodeURIComponent(quality)}`;
+    const api = `https://yabes-api.pages.dev/api/ai/video/v1?prompt=${encodeURIComponent(prompt)}&quality=${encodeURIComponent(quality)}`;
     const res = await fetch(api);
     if (!res.ok) throw new Error('Network error');
 
